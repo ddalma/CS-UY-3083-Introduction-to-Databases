@@ -1,0 +1,42 @@
+1. SELECT ID FROM student WHERE dept_name='Physics'
+
+2.SELECT ID, name FROM student WHERE dept_name='physics' AND tot_cred >= 60
+
+3.SELECT student.ID,grade,course_id FROM student,takes WHERE grade = 'B'AND course_id = 'CS-101'  //still need to check on this
+
+4.SELECT student.ID,grade,course_id,semester, year FROM student,takes WHERE grade = 'B'AND course_id = 'CS-101'AND semester = 'Fall' AND year = '2010'  //still need to check this
+
+5.SELECT student.ID, name,grade,course_id FROM student,takes WHERE grade = 'B'AND course_id = 'CS-101' //still need to check this
+
+6.SELECT student.ID, name,grade,course_id FROM student,takes WHERE course_id = 'CS-101'AND grade = 'B' OR course_id = 'CS-190' AND grade = 'B' //still need to check this
+
+7. SELECT instructor.ID, name, course_id FROM instructor, teaches WHERE course_id LIKE'%CS%' AND instructor.ID = teaches.ID
+
+
+8. SELECT student.ID, student.name, salary FROM student, instructor WHERE salary > 75000
+
+9. SELECT ID, name, building FROM instructor, section WHERE building = 'Taylor'
+
+10.
+
+11.
+
+12.
+
+13.
+
+14.
+
+15.
+
+16.
+
+17.SELECT course_id, AVG(credits) FROM course GROUP BY dept_name
+
+
+18.SELECT building, COUNT(*)course_id FROM section GROUP BY building
+
+19. SELECT dept_name, MAX(salary) FROM instructor WHERE dept_name ='Comp. Sci.'
+
+
+

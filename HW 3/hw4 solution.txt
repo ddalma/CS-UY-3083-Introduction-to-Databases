@@ -1,0 +1,195 @@
+1) Find IDs of students who took lectures in classroom 101 and in
+classroom 120
+SELECT DISTINCT T.ID
+FROM takes T NATURAL JOIN section S
+WHERE S.room_number = 101 AND T.ID IN
+(SELECT ID FROM takes NATURAL JOIN section WHERE room_number = 120)
+
+2) Find IDs and names of students who took course under instructor
+“Kim” and “Katz”
+SELECT DISTINCT S.ID, S.name FROM student S
+WHERE S.ID IN
+(SELECT T.ID FROM takes T JOIN teaches TE ON TE.sec_id = T.sec_id AND
+TE.semester = T.semester AND TE.year = T.year JOIN instructor I
+ON TE.ID = I.ID WHERE I.name="Katz" and T.ID IN
+(SELECT T.ID FROM takes T JOIN teaches TE ON TE.sec_id = T.sec_id AND
+TE.semester = T.semester AND TE.year = T.year JOIN instructor I
+ON TE.ID = I.ID WHERE I.name="Kim"))
+
+
+3) Find IDs and names of students who took CS-315 and got an A in all
+prerequisite for CS-315 and, but did not get an A in CS-315.
+SELECT DISTINCT S.ID, S.name FROM takes T NATURAL JOIN student S
+WHERE T.course_id = 'CS-315' AND T.grade != 'A' AND NOT EXISTS
+(SELECT prereq_id FROM prereq WHERE course_id = 'CS-315' AND prereq_ID
+NOT IN (SELECT course_id FROM takes WHERE ID = S.ID AND grade = 'A')) 
+
+
+4) Find IDs and names of students who got an A in CS-101 and but not
+under instructor “Katz”
+SELECT DISTINCT S.ID, S.name FROM student S NATURAL JOIN takes T
+WHERE T.course_id = 'CS-101' AND T.grade = 'A' AND T.ID NOT IN
+(SELECT DISTINCT T.ID FROM takes T JOIN teaches TE ON TE.sec_id = T.sec_id
+AND TE.semester = T.semester AND TE.year = T.year
+JOIN instructor I ON TE.ID = I.ID WHERE T.course_id = 'CS-101' AND I.name =
+'Katz' AND T.grade = 'A')
+
+
+5) Find IDs of students who have repeated a course (i.e. taken the same
+course more than once.
+SELECT DISTINCT ID FROM takes
+GROUP BY ID, course_id
+HAVING COUNT(*)>1
+
+
+6) Create a table gradepoint (letter, points) to associate letter grades
+with points and fill it with the appropriate values (’A’, 4.0), (’A-’ ,3.7),
+etc. Use it to find average grade of entire class for all courses taught
+in summer 2010.
+CREATE TABLE gradepoint(
+grade VARCHAR( 2 ) PRIMARY KEY,
+points DECIMAL(2,1) NOT NULL
+)
+INSERT INTO gradepoint(grade, points)
+VALUES ('A', 4.0), ('A-', 3.7), ('B', 3.0), ('B+', 3.3), ('B-', 2.7), ('C', 2.0),
+('C+', 2.3), ('C-', 1.7), ('D', 1.0), ('D+', 1.0), ('F', 0.0)
+
+SELECT AVG (points) FROM takes NATURAL JOIN gradepoint
+WHERE semester = 'Summer' AND year=2010 
+
+
+7) When the database has the gradepoint table an additional foreign
+key constraint would be useful on one of the other tables. What is
+that constraint and which table does it belong on? (Optionally, you
+may add the constraint to your database.)
+Adding the constraint foreign key grade references gradepoint.grade to the
+takes table will assure that all grades recorded there are legitimate. However
+MySQL doesn't seem to permit this because takes.grade can be NULL.
+
+
+8) Create a view called deanslist with the ids and names of students
+whose gradepoint averages are over 3.0.
+
+CREATE VIEW deanslist AS
+SELECT S.name, S.ID, sum (G.points * C.credits) / sum (C.credits) AS gpa
+FROM student S NATURAL JOIN course C NATURAL JOIN takes T
+NATURAL JOIN gradepoint G
+WHERE S.ID = T.ID
+GROUP BY S.ID, S.name
+HAVING gpa > 3.0
+-----grouping just by id works on MySQL, but technically, every attribute
+in the select clause should either be aggregated or should be in the
+group by clause.
+
+
+9) Use the deanslist view to find the number of deanslist students for
+each advisor.
+SELECT A.i_ID, COUNT (*) AS no_of_students FROM advisor A JOIN deanslist D
+WHERE A.s_ID = D.ID
+GROUP BY A.i_ID 
+
+
+10) Find the ID and name of the ’Comp Sci’ student with the highest
+grade point average (of any Comp Sci student).
+CREATE VIEW comp_sci_gpa AS
+SELECT name, takes.id, sum (points * credits) / sum (credits) AS gpa
+FROM student, course NATURAL JOIN takes NATURAL JOIN gradepoint
+WHERE student.dept_name = 'Comp. Sci.' AND student.id = takes.id
+GROUP BY id, name
+SELECT * FROM comp_sci_gpa
+WHERE gpa = (SELECT max (gpa) FROM comp_sci_gpa )
+
+
+11) Find IDs of students who got a higher grade in CS-101 than they got
+in CS-347
+SELECT S.ID FROM student AS S WHERE
+(SELECT max (G.points) FROM takes T
+NATURAL JOIN gradepoint G WHERE T.ID = S.ID AND T.course_id = 'CS-101') >
+(SELECT max (G.points) FROM takes T NATURAL JOIN gradepoint G
+WHERE T.ID = S.ID AND T.course_id = 'CS-347')
+-- NOTE: using max (points) instead of points guarantees that
+-- the subqueries are scalar subqueries, so it's OK to compare
+-- them using a scalar operator (>).
+-- If a student took either of these courses twice, it's using
+-- their better grade for the comparison.
+
+
+12)Find the IDs and names of students with the highest number of total credit.
+SELECT ID, name FROM student WHERE tot_cred = (SELECT MAX (tot_cred)
+FROM student) 
+
+
+13)Find the IDs and names of students with highest number of ‘A’
+grades in ‘Comp Sci’ courses
+CREATE VIEW temp AS
+SELECT ID, count (*) AS total_courses FROM takes NATURAL JOIN course
+WHERE dept_name = 'Comp. Sci.' AND grade = 'A'
+GROUP BY ID
+SELECT ID, name FROM student WHERE ID IN
+(SELECT ID FROM temp WHERE total_courses =
+(SELECT MAX (total_courses) FROM temp))
+
+
+14)Find IDs of students who never got grades higher than B+
+SELECT DISTINCT ID FROM takes WHERE ID NOT IN
+(SELECT ID FROM takes WHERE grade = 'A' or grade = 'A-')
+
+
+15)Find the course id of each course that has been offered two years in
+a row.
+SELECT DISTINCT S.course_id FROM section S WHERE course_id IN
+(SELECT course_id FROM section WHERE year = S.year + 1)
+
+
+16) Find instructors who have taught all ’Comp Sci’ courses.
+SELECT I.ID, I.name FROM instructor I
+WHERE NOT EXISTS
+(SELECT course_id
+FROM course WHERE dept_name = 'Comp Sci'
+AND course_id NOT IN
+(SELECT TE.course_id FROM teaches TE WHERE I.ID = TE. ID)) 
+
+
+17) Find id and name of each student who has name LIKE ‘%an%’ and
+taken a course with course id LIKE ’CS%’ every semester that he or
+she has been enrolled (i.e. every semester that he/she has taken
+any course.)
+SELECT DISTINCT id, name FROM student s NATURAL JOIN takes
+WHERE NOT EXISTS
+(SELECT semester, year FROM takes
+WHERE id = s.id AND (semester, year) NOT IN
+(SELECT semester, year FROM takes WHERE id = s.id
+AND course_id LIKE ('CS%') ))
+AND name LIKE ('%an%')
+
+
+18)List all courses and the IDs of instructors who’ve taught them.
+Include courses that haven’t been taught, with NULL in the ID
+column for such courses.
+SELECT C.course_id, C.title, TE.ID FROM course C
+NATURAL LEFT OUTER JOIN teaches TE 
+
+
+Problem 2
+1) Deleting a row from the course table could cause deletions of rows
+in tables that have foreign keys referencing course, with "on delete cascade",
+namely prereq and section.
+In turn this could "cascade" to other tables that reference section and have
+"on delete cascade", such as takes and teaches.
+
+
+2) In this case, the deletion of a row from course could result in deletion of
+rows from prereq and section which can further lead to deletion of row from
+takes and teaches.
+
+
+3) Add to the takes table
+FOREIGN KEY (course_id, sec_id, semester, year)
+references teaches(course_id, sec_id, semester, year)
+
+
+4) If classroom has the tuples{(Rogers, 1, x), (JAB, 2, y) and section has
+a row with building=Rogers and room-number = 2, constraints a and b are
+satised,
+but the stronger constraint c is not, because Rogers and 2 are not in the same
+row of the classroom table. 
