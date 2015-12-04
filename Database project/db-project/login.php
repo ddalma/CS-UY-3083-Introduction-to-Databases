@@ -1,7 +1,7 @@
 <?php
 $servername = "localhost";
 $dbusername = "root";
-$dbpassword = "" ;
+$dbpassword = "root" ;
 $dbname = "meetup";
 $conn = new mysqli($servername, $dbusername, $dbpassword, $dbname);
 if(!$conn) 
@@ -19,14 +19,12 @@ $password = $_POST['pass'];
 //Protect against SQL Injection
 $username = stripslashes($username);
 $password = stripslashes($password);
-$username = mysql_real_escape_string($username);
-$password = mysql_real_escape_string($password);
 
-$Replaces ? with username and password
+//Replaces ? with username and password
 $pStmt->bind_param("ss", $username, $password);
 
 //Executes query and if a result is found, log in and create session
-pStmt->execute();
+$pStmt->execute();
 if($pStmt->fetch())
 {
 	Session_start();
@@ -35,7 +33,10 @@ if($pStmt->fetch())
 	header("Location: index.php");
 }
 else
-	return "Incorrect username or password";
+{
+	header("Location: login.html");
+	$response = "Incorrect username or password";
+}
 
 $pStmt->close();
 ?>

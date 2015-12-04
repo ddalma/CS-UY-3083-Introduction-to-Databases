@@ -25,6 +25,13 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
 </head>
 
 <body>
@@ -41,8 +48,10 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand" href="index.html">Meetup</a>
-                <a class="navbar-brand" href="#"><span>Find</span></a>
-                <a class="navbar-brand" href="#"><span>Start</span></a>
+                <a class="navbar-brand" href="#"><span style="color: red;">Find</span></a>
+                <a class="navbar-brand" href="#"><span style="color: red;">Start</span></a>
+                <a class="navbar-brand" href="#"><span style="color: red;">Invite</span></a>
+
 
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -60,13 +69,13 @@
                     </li>
                 -->
                     <li>
-                        <a href="signup.html">Sign Up</a>
+                        <a href="#">Messages</a>
                     </li>
                     <li>
-                        <a href="login.html">Log in</a>
+                        <a href="#">Notifications</a>
                     </li>
-                    <li>
-                        <a href="#">English <b class="caret"></b></a>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">English <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li>
                                 <a href="full-width.html">Full Width Page</a>
@@ -104,9 +113,11 @@
         <!-- Wrapper for slides -->
         <div class="carousel-inner">
             <div class="item active">
-                <div class="fill" style="background-image:url('http://placehold.it/1900x1080&text=Slide One');"></div>
+                <div class="fill"style="background-image:url('http://placehold.it/1900x1080&text=You Are Now Logged In!');"></div>
+                <hr>
                 <div class="carousel-caption">
-                    <h2>Caption</h2>
+                    <h2>Welcome to Meetup!</h2>
+                    <label>There are 128,895 Meetups happening this week about everything from careers to hiking, parenting, tech, photography and urban gardening …</label>
                 </div>
             </div>
         </div>

@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -24,13 +26,6 @@
     <script src="js/vendor/modernizr-2.8.3.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
 
 </head>
 
@@ -101,86 +96,41 @@
 
     <!-- Page Content -->
     <div class="container">
-
-        <!-- Page Heading/Breadcrumbs -->
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">Pricing Table
-                    <small>Subheading</small>
+                <h1 class="page-header">
+                    <small></small>
                 </h1>
                 <ol class="breadcrumb">
-                    <li><a href="index.html">Home</a>
-                    </li>
-                    <li class="active">Pricing Table</li>
+                    <li></li>
                 </ol>
             </div>
         </div>
-        <!-- /.row -->
 
-        <!-- Content Row -->
-        <div class="row">
-            <div class="col-md-4">
-                <div class="panel panel-default text-center">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Basic</h3>
-                    </div>
-                    <div class="panel-body">
-                        <span class="price"><sup>$</sup>19<sup>99</sup></span>
-                        <span class="period">per month</span>
-                    </div>
-                    <ul class="list-group">
-                        <li class="list-group-item"><strong>1</strong> User</li>
-                        <li class="list-group-item"><strong>5</strong> Projects</li>
-                        <li class="list-group-item"><strong>Unlimited</strong> Email Accounts</li>
-                        <li class="list-group-item"><strong>10GB</strong> Disk Space</li>
-                        <li class="list-group-item"><strong>100GB</strong> Monthly Bandwidth</li>
-                        <li class="list-group-item"><a href="#" class="btn btn-primary">Sign Up!</a>
-                        </li>
-                    </ul>
+        <div class="login-container">
+            <div class="first-box">
+                <span style="color:red"><h2>Login</h2></span>
+                <label>Not registered with us yet?<a href="signup.html"> Sign up</a></label>
+            </div>
+            <form  action="login.php" method="post" role="form">
+            <div class="second-box">
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input type="username" name="user" class="form-control" id="username" placeholder="Enter username">
+                </div>
+                <div class="form-group">
+                    <label for="pwd">Password:</label>
+                    <h6><a href="">Forgot your password?</a></h6>
+                    <input type="password" name="pass" class="form-control" id="pwd" placeholder="Enter password">
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="panel panel-primary text-center">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Plus <span class="label label-success">Best Value</span></h3>
-                    </div>
-                    <div class="panel-body">
-                        <span class="price"><sup>$</sup>39<sup>99</sup></span>
-                        <span class="period">per month</span>
-                    </div>
-                    <ul class="list-group">
-                        <li class="list-group-item"><strong>10</strong> User</li>
-                        <li class="list-group-item"><strong>500</strong> Projects</li>
-                        <li class="list-group-item"><strong>Unlimited</strong> Email Accounts</li>
-                        <li class="list-group-item"><strong>1000GB</strong> Disk Space</li>
-                        <li class="list-group-item"><strong>10000GB</strong> Monthly Bandwidth</li>
-                        <li class="list-group-item"><a href="#" class="btn btn-primary">Sign Up!</a>
-                        </li>
-                    </ul>
-                </div>
+            <div class="checkbox">
+                <label><input type="checkbox"> Keep me signed in</label>
             </div>
-            <div class="col-md-4">
-                <div class="panel panel-default text-center">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Ultra</h3>
-                    </div>
-                    <div class="panel-body">
-                        <span class="price"><sup>$</sup>159<sup>99</sup></span>
-                        <span class="period">per month</span>
-                    </div>
-                    <ul class="list-group">
-                        <li class="list-group-item"><strong>Unlimted</strong> Users</li>
-                        <li class="list-group-item"><strong>Unlimited</strong> Projects</li>
-                        <li class="list-group-item"><strong>Unlimited</strong> Email Accounts</li>
-                        <li class="list-group-item"><strong>10000GB</strong> Disk Space</li>
-                        <li class="list-group-item"><strong>Unlimited</strong> Monthly Bandwidth</li>
-                        <li class="list-group-item"><a href="#" class="btn btn-primary">Sign Up!</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+            <button type="submit"class="btn btn-default">Log in</button>
+            </form>
+            <?php echo isset($response) ? $response : " " ; ?>
         </div>
-        <!-- /.row -->
 
         <hr>
 
