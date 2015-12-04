@@ -1,7 +1,7 @@
 1. SELECT ID, course_id, room_number
 from takes NATURAL JOIN section
 WHERE takes.course_id = section.course_id AND (room_number = '101' or room_number = '120');
-//re-check
+
 
 2.
 
