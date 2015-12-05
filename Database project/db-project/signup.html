@@ -31,7 +31,7 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-
+	
 </head>
 
 <body>
@@ -122,19 +122,31 @@
                 <div class="first-box">
                     <span style="color:red"><h2>Signup</h2></span>
                 </div>
-            <form role="form">
+            <form action = "register.php" role="form" method = "post" onsubmit="return validateForm()" name = "registerForm">
                 <div class="second-box">
                     <div class= "form-group">
-                        <label for ="name">Your name (this is public)</label>
-                        <input type="name" class="form-control" id="name" placeholder="Enter your name">
+                        <label for ="username">Username</label>
+                        <input type="username" name = "user" class="form-control" id="user" placeholder="Enter your username" required>
                     </div>
                     <div class="form-group">
-                        <label for="email">Email Address</label>
-                        <input type="email" class="form-control" id="email" placeholder="Enter email">
+                        <label for="password">Password</label>
+                        <input type="password" name = "pass" class="form-control" id="pass" placeholder="Enter your password" required>
                     </div>
-                    <div class="form-group">
-                        <label for="pwd">Password</label>
-                        <input type="password" class="form-control" id="pwd" placeholder="Enter password">
+					<div class="form-group">
+                        <label for="password">Verify Password</label>
+                        <input type="password" name = "verifypass" class="form-control" id="verifypwd" placeholder="Verify password" required>
+                    </div>
+					<div class="form-group">
+                        <label for="firstname">First Name</label>
+                        <input type="firstname" name = "first" class="form-control" id="first" placeholder="Enter your First Name" required>
+                    </div>
+					<div class="form-group">
+                        <label for="lastname">Last Name</label>
+                        <input type="lastname" name = "last" class="form-control" id="last" placeholder="Enter your Last Name" required>
+                    </div>
+					<div class="form-group">
+                        <label for="zipcode">Zipcode</label>
+                        <input type="zipcode" name = "zipcode" class="form-control" id="zipcode" placeholder="Enter your Zipcode" required>
                     </div>
                 </div>
                 <button type="login"class="btn btn-default">Sign up</button>
